@@ -1,0 +1,14 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0 auto;
+  overflow: hidden;
+}

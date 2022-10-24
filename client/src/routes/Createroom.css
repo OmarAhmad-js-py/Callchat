@@ -1,0 +1,151 @@
+.btn-style {
+  background-color: #4caf50;
+  color: white;
+  display: flex;
+  margin: 8px 10px;
+  justify-content: center;
+  padding: 14px 20px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.Room_input {
+  display: block;
+  border-radius: 31px;
+  height: 62px;
+  width: 300px;
+  background-color: #ffffff;
+  outline: none;
+  border: none;
+}
+
+.Form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.btn-style:hover {
+  background-color: #45a049;
+  cursor: pointer;
+  width: 150px;
+}
+
+.userBorder {
+  border: 1px solid #4caf50;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  
+}
+
+.webcam-section { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  background-color: #4caf50;
+  display: flex;
+  justify-content: center;
+  margin-right: 30px;
+  color: white;
+  padding: 16px 30px;
+  border-radius:7px; 
+  cursor: pointer;
+  width: 150px;
+}
+
+.controllpanel {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  width: 1720px;
+  border-radius: 5px;
+  background-color: rgba(86, 86, 86, 0.12);
+  display: flex;
+  flex-direction:row;
+  justify-content: center;
+  margin-bottom:20px
+}
+
+.toggled {
+  background-color: #555;
+  color: white;
+}
+
+.pids-wrapper {
+  width: 100%;
+}
+
+.pid {
+  width: calc(10% - 10px);
+  height: 10px;
+  display: inline-block;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.scream-Modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px 60px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  font-size: 20px;
+}
+.menu-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  padding: 20px 0 0 2em;
+  align-items: baseline;
+}
+
+.menu-content {
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 200px;
+  padding: 20px 0 0 6px;
+}
+
+.Menu-bars {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.ShadowBox {
+  width: 600px;
+  height: 400px; 
+  margin-top: 18rem;
+  border-radius: 5px;
+  display: flex; 
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 15px 19px 0px 0px rgba(63, 60, 60, 0.75);
+}
+
+
+.icons{
+  color: rgb(255, 255, 255);
+}
