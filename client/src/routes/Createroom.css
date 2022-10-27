@@ -112,6 +112,10 @@
   bottom: 0;
 }
 
+.menu-transition {
+  transition: all .3s;
+}
+
 .menu-item {
   display: flex;
   flex-direction: row;

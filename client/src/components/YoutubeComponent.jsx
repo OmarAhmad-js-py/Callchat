@@ -4,13 +4,20 @@ import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-function SidebarComponent() {
+import { useEffect } from 'react';
+function SidebarComponent(props) {
+    const {open} = props;
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
 
+    useEffect(() => {
+        //connect to a socket io room 
+                
+
+
+    });
 
     return (<>
-        <div className="yt-overlay">
+        <div className="yt-overlay" style={{display: open? "block" : "none"}}>
             <section className="chatbox">
                 <section className="chat-window" ></section>
                 <div className="chat-input" >
