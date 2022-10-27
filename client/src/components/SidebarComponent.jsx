@@ -4,7 +4,7 @@ import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from "react-router-dom";
 import YoutubeComponent from '../components/YoutubeComponent.jsx';
-import { faComments, faHome, faUser, faTimes, faBars, faB } from "@fortawesome/free-solid-svg-icons";
+import { faComments, faHome, faUser, faTimes, faBars } from "@fortawesome/free-solid-svg-icons";
 
 function SidebarComponent(props) {
     const navigate = useNavigate();
@@ -32,8 +32,9 @@ function SidebarComponent(props) {
 
 
     return (<>
-        <div className="menu-overlay" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-            <div className={`${open ? "w-63" : "w-20 "} bg-primary-800 h-screen p-5  pt-8 duration-700 menu-transition`}>
+        <div className="menu-overlay" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} >
+            <div className={`${open ? "w-63" : "w-20 "} bg-primary-800 h-screen p-5 pt-8 `}
+            >
 
                 <div className="flex gap-x-1 items-center ">
                     <img src="../src/assets/logo.png" className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"}`} />
@@ -44,9 +45,11 @@ function SidebarComponent(props) {
                 <ul className="pt-6">
                     {MenuItems}
                 </ul>
-                <YoutubeComponent open={ytOpen}/>
+                
             </div>
-        </div>
+           
+        </div> 
+        <YoutubeComponent open={ytOpen}/>
     </>
     )
 

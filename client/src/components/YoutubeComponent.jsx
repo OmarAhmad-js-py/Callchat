@@ -1,25 +1,39 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShare } from "@fortawesome/free-solid-svg-icons";
+import socket from '../routes/util/socketInstance';
 import { useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
 function SidebarComponent(props) {
-    const {open} = props;
+    const socketRef = useRef();
     const navigate = useNavigate();
+    const {open} = props
 
-    useEffect(() => {
-        //connect to a socket io room 
-                
+    //make a function that sends message to everyone in the same room
+    const sendMessage = () => {
+        console.log(socket.id)
+        socket.emit("Send_message", {
+            message: "Hello everyone!",
+            sender: socket.id,
+    })};
+    
+    
+    const Receiver = () => {
+        socket.on("create message", (message) => {
+            console.log(message);
+        });
+    }
+    Receiver()
 
-
-    });
+   
 
     return (<>
-        <div className="yt-overlay" style={{display: open? "block" : "none"}}>
+        <div className="yt-overlay" style={{display: open ? 'block' : 'none'}}>
             <section className="chatbox">
-                <section className="chat-window" ></section>
+                <section className="chat-window">
+                    
+                </section>
                 <div className="chat-input" >
                     <input
                         type="text"
@@ -30,7 +44,7 @@ function SidebarComponent(props) {
                     />
                     <button
                         className="bg-primary-600 "
-                        type="submit"
+                        onClick={() => sendMessage()}
                         aria-label="Click here to send message"
                         tabIndex="0"
                     >

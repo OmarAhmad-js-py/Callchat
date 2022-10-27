@@ -4,9 +4,8 @@ import "./Createroom.css";
 import "../assets/ytComp.css";
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import socket from './util/socketInstance';
 import { useNavigate, useParams } from "react-router-dom";
-import SidebarComponent from '../components/SidebarComponent.jsx';
-import YoutubeComponent from '../components/YoutubeComponent.jsx';
 import {
     faBars,
     faComments,
@@ -30,8 +29,7 @@ function Room() {
     const userVideo = useRef();
     const partnerVideo = useRef();
     const peerRef = useRef();
-    const socketRef = useRef();
-    const otherUser = useRef();
+    let otherUser = useRef();
     const userStream = useRef();
 
 
@@ -72,23 +70,31 @@ function Room() {
                 }
             }
 
-            socketRef.current = io.connect("localhost:8000", { reconnect: true });
-            socketRef.current.emit("join room", params.roomID);
+            socket.emit("join room", params.roomID);
+            socket.on("connect", () => {
+                console.log("Connected to server");
+            }
+            );
+            socket.on("disconnect", () => {
+                console.log("Disconnected from server");
+            }
+            );
 
-            socketRef.current.on('other user', userID => {
+
+            socket.on('other user', userID => {
                 callUser(userID);
-                otherUser.current = userID;
+                otherUser = userID;
             });
 
-            socketRef.current.on("user joined", userID => {
-                otherUser.current = userID;
+            socket.on("user joined", userID => {
+                otherUser = userID;
             });
 
-            socketRef.current.on("offer", handleReceiveCall);
+            socket.on("offer", handleReceiveCall);
 
-            socketRef.current.on("answer", handleAnswer);
+            socket.on("answer", handleAnswer);
 
-            socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
+            socket.on("ice-candidate", handleNewICECandidateMsg);
         });
 
     }, [video, audio]);
@@ -128,10 +134,10 @@ function Room() {
         }).then(() => {
             const payload = {
                 target: userID,
-                caller: socketRef.current.id,
+                caller: socket.id,
                 sdp: peerRef.current.localDescription
             };
-            socketRef.current.emit("offer", payload);
+            socket.emit("offer", payload);
         }).catch(e => console.log(e));
     }
 
@@ -147,10 +153,10 @@ function Room() {
         }).then(() => {
             const payload = {
                 target: incoming.caller,
-                caller: socketRef.current.id,
+                caller: socket.id,
                 sdp: peerRef.current.localDescription
             }
-            socketRef.current.emit("answer", payload);
+            socket.emit("answer", payload);
         })
     }
 
@@ -165,7 +171,7 @@ function Room() {
                 target: otherUser.current,
                 candidate: e.candidate,
             }
-            socketRef.current.emit("ice-candidate", payload);
+            socket.emit("ice-candidate", payload);
         }
     }
 
