@@ -10,7 +10,6 @@ function SidebarComponent(props) {
     const navigate = useNavigate();
     const {open} = props
 
-    //make a function that sends message to everyone in the same room
     const sendMessage = () => {
         console.log(socket.id)
         socket.emit("Send_message", {
@@ -19,12 +18,9 @@ function SidebarComponent(props) {
     })};
     
     
-    const Receiver = () => {
-        socket.on("create message", (message) => {
+    socket.on("create message", (message) => {
             console.log(message);
-        });
-    }
-    Receiver()
+    });
 
    
 

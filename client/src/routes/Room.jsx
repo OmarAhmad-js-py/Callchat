@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import "./Createroom.css";
 import "../assets/ytComp.css";
-import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import socket from './util/socketInstance';
 import { useNavigate, useParams } from "react-router-dom";
@@ -44,7 +43,6 @@ function Room() {
             const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
             analyser.smoothingTimeConstant = 0.8;
             analyser.fftSize = 2048;
-
             microphone.connect(analyser);
             analyser.connect(scriptProcessor);
             scriptProcessor.connect(audioContext.destination);
@@ -97,7 +95,7 @@ function Room() {
             socket.on("ice-candidate", handleNewICECandidateMsg);
         });
 
-    }, [video, audio]);
+    }, []);
 
 
 

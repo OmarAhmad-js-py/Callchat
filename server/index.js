@@ -20,6 +20,7 @@ io.on("connection", socket => {
         console.log(`connect_error due to ${err.message}`);
     });
     socket.on("join room", roomID => {
+        console.log(`join room ${roomID}`);
         if (rooms[roomID]) {
             rooms[roomID].push(socket.id);
             console.log(rooms);
@@ -35,6 +36,17 @@ io.on("connection", socket => {
         }
     });
 
+    socket.on("offer", payload => {
+        io.to(payload.target).emit("offer", payload);
+    });
+
+    socket.on("answer", payload => {
+        io.to(payload.target).emit("answer", payload);
+    });
+
+    socket.on("ice-candidate", incoming => {
+        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
+    });
 
     socket.on("Send_message", payload => {
         try {
@@ -51,21 +63,6 @@ io.on("connection", socket => {
             console.log(error)
         }
     })
-
-
-
-
-    socket.on("offer", payload => {
-        io.to(payload.target).emit("offer", payload);
-    });
-
-    socket.on("answer", payload => {
-        io.to(payload.target).emit("answer", payload);
-    });
-
-    socket.on("ice-candidate", incoming => {
-        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
-    });
 
 });
 
