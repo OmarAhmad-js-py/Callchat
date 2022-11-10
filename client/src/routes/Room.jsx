@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import "./Createroom.css";
 import "../assets/ytComp.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import socket from './util/socketInstance';
 import { useNavigate, useParams } from "react-router-dom";
+import socket from './util/socketInstance';
 import {
     faBars,
     faComments,
@@ -28,7 +28,7 @@ function Room() {
     const userVideo = useRef();
     const partnerVideo = useRef();
     const peerRef = useRef();
-    let otherUser = useRef();
+    const otherUser = useRef();
     const userStream = useRef();
 
 
@@ -43,10 +43,11 @@ function Room() {
             const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
             analyser.smoothingTimeConstant = 0.8;
             analyser.fftSize = 2048;
+
             microphone.connect(analyser);
             analyser.connect(scriptProcessor);
             scriptProcessor.connect(audioContext.destination);
-            scriptProcessor.onaudioprocess = function () {
+            scriptProcessor.onaudioprocess = () => {
                 const array = new Uint8Array(analyser.frequencyBinCount);
                 analyser.getByteFrequencyData(array);
                 const arraySum = array.reduce((a, value) => a + value, 0);
@@ -63,29 +64,20 @@ function Room() {
                     pid.style.backgroundColor = "#e6e7e8";
                 }
                 for (const pid of pidsToColor) {
-                    // console.log(pid[i]);
                     pid.style.backgroundColor = "#69ce3b";
                 }
             }
 
-            socket.emit("join room", params.roomID);
-            socket.on("connect", () => {
-                console.log("Connected to server");
-            }
-            );
-            socket.on("disconnect", () => {
-                console.log("Disconnected from server");
-            }
-            );
 
+            socket.emit("join room", params.roomID);
 
             socket.on('other user', userID => {
                 callUser(userID);
-                otherUser = userID;
+                otherUser.current = userID;
             });
 
             socket.on("user joined", userID => {
-                otherUser = userID;
+                otherUser.current = userID;
             });
 
             socket.on("offer", handleReceiveCall);
