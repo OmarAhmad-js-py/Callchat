@@ -20,6 +20,7 @@ io.on("connection", socket => {
         console.log(`connect_error due to ${err.message}`);
     });
     socket.on("join room", roomID => {
+        console.log(`join room ${roomID}`);
         if (rooms[roomID]) {
             rooms[roomID].push(socket.id);
             console.log(rooms);
@@ -35,26 +36,6 @@ io.on("connection", socket => {
         }
     });
 
-
-    socket.on("Send_message", payload => {
-        try {
-            //check which room the socket id belongs to 
-            const roomID = Object.keys(rooms).find(key => rooms[key].includes(socket.id));
-            console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
-            if (roomID) {
-                const otherusers = Object.keys(rooms).find(key => rooms[key])
-                io.to(otherusers).emit("create message", payload.message);
-            } else {
-                console.log("Room not found")
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    })
-
-
-
-
     socket.on("offer", payload => {
         io.to(payload.target).emit("offer", payload);
     });
@@ -66,6 +47,22 @@ io.on("connection", socket => {
     socket.on("ice-candidate", incoming => {
         io.to(incoming.target).emit("ice-candidate", incoming.candidate);
     });
+
+    socket.on("Send_message", payload => {
+        try {
+            const roomID = Object.keys(rooms).find(key => rooms[key].includes(socket.id));
+            console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
+            if (roomID) {
+                const otherUser = rooms[roomID].find(id => id !== socket.id);
+                socket.to(otherUser).emit("create message", payload.message);
+                console.log(`${payload.message} sent to ${otherUser}`);
+            } else {
+                console.log("Room not found")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    })
 
 });
 
