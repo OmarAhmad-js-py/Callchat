@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import CreateRoom from "./routes/CreateRoom";
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
 import './App.css';
 
 
@@ -12,7 +13,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<CreateRoom />} />
-        <Route path="/room/:roomID" element={<Index />} />
+        <Route path="/room/:roomID" element={<Dashboard />} />
       </Routes>
 
     </BrowserRouter>

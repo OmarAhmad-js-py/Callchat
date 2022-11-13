@@ -4,7 +4,7 @@ import "./Createroom.css";
 import "../assets/ytComp.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from "react-router-dom";
-import socket from './util/socketInstance';
+import socket from './util/hooks/socketInstance';
 import {
     faBars,
     faComments,

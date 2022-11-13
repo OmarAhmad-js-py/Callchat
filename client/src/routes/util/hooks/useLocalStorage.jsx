@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 const prefix = "dsc-";
 
+
 export const useLocalStorage = (key, initialValue) => {
     const prefixedKey = prefix + key;
 

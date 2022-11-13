@@ -1,36 +1,38 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShare } from "@fortawesome/free-solid-svg-icons";
 import socket from '../routes/util/hooks/socketInstance';
-import { useLocalStorage } from '../routes/util/hooks/useLocalStorage';
-import { useNavigate } from "react-router-dom";
+import { useConversations } from '../routes/util/Context/MessageProvider.jsx';
+
 function SidebarComponent(props) {
-    const socketRef = useRef();
-    const navigate = useNavigate();
-    const [message, setMessage] = useLocalStorage("message", "");
-    const finalMessage = []
-    const { open } = props
+    const { open } = props;
+    const [text, setText] = useState('')
+    const [messages, setMessages] = useState([])
+    const setRef = useCallback(node => {
+        if (node) {
+            node.scrollIntoView({ smooth: true })
+        }
+    }, [])
+    const { sendMessage, conversations } = useConversations()
 
-    const sendMessage = () => {
-        socket.emit('Send_message', { message: message, sender: socket.id });
-        setMessage("");
-        console.log(finalMessage)
+    function handleSubmit() {
 
-    };
-
-    const Receiver = () => {
-        socket.off("create message").on("create message", (message) => {
-            console.log(message)
-        });
+        sendMessage(
+            { sender: socket.id },
+            text
+        )
+        setText('')
     }
-    Receiver()
+    useEffect(() => {
+        const messages = conversations.map((conversation) => {
+            return conversation.messages
+        })
+        setMessages(messages)
+    }, [conversations])
 
-    const handleChange = event => {
-        const userMessage = JSON.stringify(event.target.value);
-        setMessage(event.target.value);
-    };
+
 
 
 
@@ -39,30 +41,36 @@ function SidebarComponent(props) {
         <div className="yt-overlay" style={{ display: open ? 'block' : 'none' }}>
             <section className="chatbox">
                 <section className="chat-window">
-                    {finalMessage.map((message, index) => {
-                        return <div className="msg-box">
-                            <div className="flr">
-                                <div className="messages">
-                                    <p className="msg">
-                                        {finalMessage}
-                                    </p>
+                    {messages.map((message, i) => {
+                        //check if it is the last message
+                        const lastMessage = messages.length - 1 === i
+                        return (
+                            <article ref={lastMessage ? setRef : null} className={message[0].FromMe ? "msg-container msg-self" : "msg-container msg-remote"} >
+                                <div className="msg-box" key={i}>
+                                    <div className="flr">
+                                        <div className="messages">
+                                            <p className="msg">
+                                                {message[0].text}
+                                            </p>
+                                        </div>
+                                        <span className="info">
+                                            <span className="username">
+                                                <u>You</u>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <img className="user-img" src="https://sothis.es/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" alt="" />
                                 </div>
-                                <span className="info">
-                                    <span className="username">
-                                        <u>You</u>
-                                    </span>
-                                </span>
-                            </div>
-                            <img className="user-img" src="https://sothis.es/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" alt="" />
-                        </div>
-                    })
-                    }
+                            </article >
+                        )
+                    })}
+
                 </section>
                 <div className="chat-input" >
                     <input
                         type="text"
-                        onChange={handleChange}
-                        value={message}
+                        onChange={e => setText(e.target.value)}
+                        value={text}
                         placeholder="Type a message"
                         aria-label="Enter a message here to chat in your room"
                         maxLength="255"
@@ -70,15 +78,15 @@ function SidebarComponent(props) {
                     />
                     <button
                         className="bg-primary-600 "
-                        onClick={() => sendMessage()}
+                        onClick={() => handleSubmit()}
                         aria-label="Click here to send message"
                         tabIndex="0"
                     >
                         <FontAwesomeIcon icon={faShare} size='lg' />
                     </button>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     </>
     )
 

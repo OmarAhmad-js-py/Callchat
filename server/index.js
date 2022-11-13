@@ -47,6 +47,11 @@ io.on("connection", socket => {
     socket.on("ice-candidate", incoming => {
         io.to(incoming.target).emit("ice-candidate", incoming.candidate);
     });
+    socket.on("room", payload => {
+        const room = Object.keys(rooms).find(key => rooms[key])
+        socket.to(payload).emit("payload", room)
+        console.log("sent to user", payload)
+    });
 
     socket.on("Send_message", payload => {
         try {
@@ -54,7 +59,10 @@ io.on("connection", socket => {
             console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
             if (roomID) {
                 const otherUser = rooms[roomID].find(id => id !== socket.id);
-                socket.to(otherUser).emit("create message", payload.message);
+                console.log(otherUser + " is the other user")
+                socket.to(otherUser).emit("receive-message", {
+                    recipients: socket.id, sender: payload.sender, text: payload.text
+                });
                 console.log(`${payload.message} sent to ${otherUser}`);
             } else {
                 console.log("Room not found")

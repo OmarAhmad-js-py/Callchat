@@ -77,7 +77,16 @@
   float: left;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
 }
-
+ .msg-self .msg-box {
+  border-radius: 6px 0 0 6px;
+  background: #2671ff;
+  float: right;
+}
+ .msg-remote .msg-box {
+  border-radius: 0px 6px 6px 0px;
+  background: #5b5e6c;
+  float: left;
+}
 .flr {
   flex: 1 0 auto;
   display: flex;
@@ -107,6 +116,23 @@
   margin: 3px 0 10px 10px;
   width: 30px;
   height: 30px;
-  
   border-radius: 50%;
+}
+.msg-self .user-img {
+  margin: 0 0 10px 10px;
+}
+
+ .msg-self .msg {
+  text-align: right;
+}
+ .msg-remote .msg {
+  text-align: left;
+}
+
+.msg-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 10px 0;
+  padding: 0;
 }
