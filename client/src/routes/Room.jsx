@@ -210,45 +210,46 @@ function Room() {
 
     return (
         <>
-            <div className="webcam-section">
-                <div className="userBorder">
-                    <section className="partner-video">
-                        <video autoPlay ref={partnerVideo} />
-                    </section>
-                </div>
-                <div className="userBorder">
-                    <section className="user-video">
-                        <video autoPlay ref={userVideo} />
-                    </section>
-                    <div className="pids-wrapper">
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
+            <div className="main">
+                <div className="webcam-section">
+                    <div className="userBorder">
+                        <section className="partner-video">
+                            <video autoPlay ref={partnerVideo} />
+                        </section>
                     </div>
-
+                    <div className="userBorder">
+                        <section className="user-video">
+                            <video autoPlay ref={userVideo} />
+                        </section>
+                        <div className="pids-wrapper">
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <ScreamComponent open={audioMax} />
-            <div className="controllpanel">
-                <div className="btn" style={{
-                    backgroundColor: audio ? '#4CAF50' : 'grey'
-                }} onClick={toggleAudio}>
-                    <FontAwesomeIcon icon={audio ? faMicrophone : faMicrophoneSlash} size="lg" />
-                </div>
-                <div className="btn" style={{ backgroundColor: "red" }} onClick={hangUp}>
-                    <FontAwesomeIcon icon={faPhoneSlash} size="lg" />
-                </div>
-                <div className="btn" style={{
-                    backgroundColor: video ? '#4CAF50' : 'grey'
-                }} onClick={toggleVideo}>
-                    <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} size="lg" />
+                <ScreamComponent open={audioMax} />
+                <div className="controllpanel">
+                    <div className="btn" style={{
+                        backgroundColor: audio ? '#4CAF50' : 'grey'
+                    }} onClick={toggleAudio}>
+                        <FontAwesomeIcon icon={audio ? faMicrophone : faMicrophoneSlash} size="lg" />
+                    </div>
+                    <div className="btn" style={{ backgroundColor: "red" }} onClick={hangUp}>
+                        <FontAwesomeIcon icon={faPhoneSlash} size="lg" />
+                    </div>
+                    <div className="btn" style={{
+                        backgroundColor: video ? '#4CAF50' : 'grey'
+                    }} onClick={toggleVideo}>
+                        <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} size="lg" />
+                    </div>
                 </div>
             </div>
         </>

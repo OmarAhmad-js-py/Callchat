@@ -1,12 +1,44 @@
-.yt-overlay{
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 500px;
-    height: 550px;
-    background-color: white;
-    border-radius:20px
+.yt-overlay {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 23%;
+  height: 50%;
+  background-color: white;
+  border-radius: 20px
 }
+
+@media screen and (max-width: 768px) {
+  .yt-overlay {
+    width: 230px;
+    height: 50%;
+    border-radius: 0px
+  }
+.msg-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 10px 0;
+  padding: 0;
+}
+}
+
+/* @media screen and (max-width: 768px) {
+  .yt-overlay {
+    width: 100%;
+    height: 100%;
+    border-radius: 0px
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .yt-overlay {
+    width: 100%;
+    height: 100%;
+    border-radius: 0px
+  }
+} */
+
 
 .chatbox {
   width: 100%;
@@ -58,12 +90,12 @@
   background-color: #2671ff;
 }
 
-.chat-input input[good] + button {
+.chat-input input[good]+button {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
   background: #2671ff;
 }
 
-.chat-input input[good] + button:hover {
+.chat-input input[good]+button:hover {
   box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -77,16 +109,19 @@
   float: left;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
 }
- .msg-self .msg-box {
+
+.msg-self .msg-box {
   border-radius: 6px 0 0 6px;
   background: #2671ff;
   float: right;
 }
- .msg-remote .msg-box {
+
+.msg-remote .msg-box {
   border-radius: 0px 6px 6px 0px;
   background: #5b5e6c;
   float: left;
 }
+
 .flr {
   flex: 1 0 auto;
   display: flex;
@@ -118,14 +153,16 @@
   height: 30px;
   border-radius: 50%;
 }
+
 .msg-self .user-img {
   margin: 0 0 10px 10px;
 }
 
- .msg-self .msg {
+.msg-self .msg {
   text-align: right;
 }
- .msg-remote .msg {
+
+.msg-remote .msg {
   text-align: left;
 }
 
@@ -134,5 +171,4 @@
   display: inline-block;
   width: 100%;
   margin: 0 0 10px 0;
-  padding: 0;
 }

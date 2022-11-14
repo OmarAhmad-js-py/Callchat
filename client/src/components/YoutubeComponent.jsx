@@ -38,7 +38,7 @@ function SidebarComponent(props) {
 
 
     return (<>
-        <div className="yt-overlay" style={{ display: open ? 'block' : 'none' }}>
+        <div className="yt-overlay duration-700 " style={{ display: open ? 'block' : 'none' }}>
             <section className="chatbox">
                 <section className="chat-window">
                     {messages.map((message, i) => {
@@ -55,7 +55,7 @@ function SidebarComponent(props) {
                                         </div>
                                         <span className="info">
                                             <span className="username">
-                                                <u>You</u>
+                                                {message[0].FromMe ? <u>You</u> : <u>Friend</u>}
                                             </span>
                                         </span>
                                     </div>
@@ -64,7 +64,6 @@ function SidebarComponent(props) {
                             </article >
                         )
                     })}
-
                 </section>
                 <div className="chat-input" >
                     <input
