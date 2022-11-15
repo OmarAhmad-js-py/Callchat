@@ -10,7 +10,7 @@ function Dashboard() {
     const dashboard = (
         <ConversationsProvider >
             <Index />
-        </ConversationsProvider>
+        </ConversationsProvider >
     )
 
     return (
