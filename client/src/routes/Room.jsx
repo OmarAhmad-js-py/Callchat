@@ -218,19 +218,20 @@ function Room() {
                 <div className="userBorder">
                     <section className="user-video">
                         <video autoPlay ref={userVideo} />
+                        <div className="pids-wrapper">
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                            <div className="pid" />
+                        </div>
                     </section>
-                    <div className="pids-wrapper">
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                        <div className="pid" />
-                    </div>
+
                 </div>
             </div>
             <div className="webcam-controls">

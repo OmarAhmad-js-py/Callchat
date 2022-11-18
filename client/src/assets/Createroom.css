@@ -40,6 +40,8 @@
 }
 
 .userBorder {
+  width: fit-content;
+  height: fit-content;
   border: 1px solid #e5e7e5;
   border-radius: 20px;
   padding: 10px;
@@ -101,15 +103,21 @@
 }
 
 .pids-wrapper {
-  width: 100%;
+  position: absolute;
+  height: 10px;
+  width: 30vw;
+  margin-top: -40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+   background-color:#ddd;
 }
 
 .pid {
-  width: calc(10% - 10px);
+  width: calc(15%);
   height: 10px;
   display: inline-block;
-  margin: 5px;
-  border-radius: 5px;
+  background-color: #555;
 }
 
 .scream-Modal {
