@@ -1,7 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import "./Createroom.css";
-import "../assets/ytComp.css";
+import "../assets/MsgStyles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from "react-router-dom";
 import socket from './util/hooks/socketInstance';
@@ -210,31 +209,31 @@ function Room() {
 
     return (
         <>
-            <div className="main">
-                <div className="webcam-section">
-                    <div className="userBorder">
-                        <section className="partner-video">
-                            <video autoPlay ref={partnerVideo} />
-                        </section>
-                    </div>
-                    <div className="userBorder">
-                        <section className="user-video">
-                            <video autoPlay ref={userVideo} />
-                        </section>
-                        <div className="pids-wrapper">
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                        </div>
+            <div className="webcam-section">
+                <div className="userBorder">
+                    <section className="partner-video">
+                        <video autoPlay ref={partnerVideo} />
+                    </section>
+                </div>
+                <div className="userBorder">
+                    <section className="user-video">
+                        <video autoPlay ref={userVideo} />
+                    </section>
+                    <div className="pids-wrapper">
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
+                        <div className="pid" />
                     </div>
                 </div>
+            </div>
+            <div className="webcam-controls">
                 <ScreamComponent open={audioMax} />
                 <div className="controllpanel">
                     <div className="btn" style={{

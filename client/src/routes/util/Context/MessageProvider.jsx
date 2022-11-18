@@ -13,6 +13,20 @@ export function ConversationsProvider({ id, children }) {
     const [conversations, setConversations] = useLocalStorage('conversations', [])
     const [selectedConversationIndex, setSelectedConversationIndex] = useState(0)
 
+    function createConversation(recipients) {
+        socket.emit('room', id)
+        socket.on('payload', (room) => {
+            setConversations(prevConversations => {
+                let newMessage = {
+                    recipients: [room],
+                    messages: [{ text: 'Hello', FromMe: false }]
+                }
+                return [...prevConversations, newMessage]
+            })
+        })
+    }
+
+    createConversation()
 
 
 

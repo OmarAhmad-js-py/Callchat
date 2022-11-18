@@ -46,10 +46,30 @@
   margin: 10px;
 }
 
-.webcam-section { 
+.webcam-section {
+  margin-top:100px; 
   display: flex;
   justify-content: center;
   align-items: center;
+
+}
+
+.webcam-controls {
+  /* bottom center  */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-container{
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .btn {
@@ -72,7 +92,7 @@
   padding: 40px;
   gap: 20px;
   border-radius: 40px;
-  width: 14%;
+  width: fit-content;
 }
 
 .toggled {

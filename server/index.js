@@ -13,6 +13,11 @@ const io = require("socket.io")(server, {
 const rooms = {};
 
 
+
+
+
+
+
 app.use(cors())
 
 io.on("connection", socket => {
@@ -20,20 +25,23 @@ io.on("connection", socket => {
         console.log(`connect_error due to ${err.message}`);
     });
     socket.on("join room", roomID => {
+        console.log(rooms[roomID] < 1);
         console.log(`join room ${roomID}`);
         if (rooms[roomID]) {
             rooms[roomID].push(socket.id);
             console.log(rooms);
-        }
-        else {
+        } else {
             rooms[roomID] = [socket.id];
             console.log(rooms);
         }
+
         const otherUser = rooms[roomID].find(id => id !== socket.id);
         if (otherUser) {
             socket.emit("other user", otherUser);
             socket.to(otherUser).emit("user joined", socket.id);
         }
+
+
     });
 
     socket.on("offer", payload => {
@@ -47,10 +55,11 @@ io.on("connection", socket => {
     socket.on("ice-candidate", incoming => {
         io.to(incoming.target).emit("ice-candidate", incoming.candidate);
     });
+
     socket.on("room", payload => {
         const room = Object.keys(rooms).find(key => rooms[key])
+        console.log(room);
         socket.to(payload).emit("payload", room)
-        console.log("sent to user", payload)
     });
 
     socket.on("Send_message", payload => {
