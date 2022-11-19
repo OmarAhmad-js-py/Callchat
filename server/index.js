@@ -29,6 +29,10 @@ io.on("connection", socket => {
         console.log(`join room ${roomID}`);
         if (rooms[roomID]) {
             rooms[roomID].push(socket.id);
+            const toFindDuplicates = rooms[roomID].filter((item, index) => rooms[roomID].indexOf(item) !== index)
+            console.log(toFindDuplicates);
+            if (toFindDuplicates.length < 0) return;
+            rooms[roomID] = rooms[roomID].filter((v, i, a) => a.indexOf(v) === i);
             console.log(rooms);
         } else {
             rooms[roomID] = [socket.id];
@@ -36,12 +40,15 @@ io.on("connection", socket => {
         }
 
         const otherUser = rooms[roomID].find(id => id !== socket.id);
-        if (otherUser) {
-            socket.emit("other user", otherUser);
-            socket.to(otherUser).emit("user joined", socket.id);
-        }
+        //console.log(otherUser)
+        if (!otherUser) return;
+        socket.emit("other user", otherUser);
+        socket.to(otherUser).emit("user joined", socket.id);
 
-
+        const usersInThisRoom = rooms[roomID].filter(id => id = socket.id);
+        if (!usersInThisRoom) return;
+        //console.log(usersInThisRoom);
+        socket.to(socket.id).emit("InstancesOfUser", usersInThisRoom);
     });
 
     socket.on("offer", payload => {

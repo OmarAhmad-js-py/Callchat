@@ -4,6 +4,7 @@ import "../assets/MsgStyles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from "react-router-dom";
 import socket from './util/hooks/socketInstance';
+import { useLocalStorage } from './util/hooks/useLocalStorage';
 import {
     faBars,
     faComments,
@@ -22,6 +23,7 @@ function Room() {
     const [audio, setAudio] = useState(true);
     const [video, setVideo] = useState(true);
     const [audioMax, setAudioMax] = useState(false);
+    const [socketInstanceID, setSocketInstanceID] = useLocalStorage("sockeID", [])
     const navigate = useNavigate();
     const params = useParams();
     const userVideo = useRef();
@@ -49,23 +51,8 @@ function Room() {
             scriptProcessor.onaudioprocess = () => {
                 const array = new Uint8Array(analyser.frequencyBinCount);
                 analyser.getByteFrequencyData(array);
-                const arraySum = array.reduce((a, value) => a + value, 0);
-                const average = arraySum / array.length;
-                colorPids(average);
             };
 
-            function colorPids(vol) {
-                const allPids = [...document.querySelectorAll('.pid')];
-                const numberOfPidsToColor = Math.round(vol / 10);
-                const pidsToColor = allPids.slice(0, numberOfPidsToColor);
-                setAudioMax(vol > 95);
-                for (const pid of allPids) {
-                    pid.style.backgroundColor = "#e6e7e8";
-                }
-                for (const pid of pidsToColor) {
-                    pid.style.backgroundColor = "#69ce3b";
-                }
-            }
 
 
             socket.emit("join room", params.roomID);
@@ -177,26 +164,23 @@ function Room() {
 
 
     const toggleAudio = () => {
-        if (audio === false) {
-            const audioTracks = userStream.current.getTracks().find(track => track.kind === "audio");
-            // audioTracks.enabled = audioTracks.enabled;
-            setAudio(true);
-        } else {
-            const audioTracks = userStream.current.getTracks().find(track => track.kind === "audio");
-            audioTracks.enabled = !audioTracks.enabled;
-            setAudio(false);
-        }
+        setAudio(audio => !audio);
+        userStream.current.getAudioTracks()[0].enabled = !(userStream.current.getAudioTracks()[0].enabled);
 
     };
-
     const toggleVideo = () => {
-        if (video === true) {
-            setVideo(false);
-        } else {
-            setVideo(true);
-        }
-
+        setVideo(video => !video);
+        userStream.current.getVideoTracks()[0].enabled = !(userStream.current.getVideoTracks()[0].enabled);
     };
+
+    // const toggleVideo = () => {
+    //     if (video === true) {
+    //         setVideo(false);
+    //     } else {
+    //         setVideo(true);
+    //     }
+
+    // };
 
     const hangUp = () => {
         userStream.current.getTracks().forEach(track => track.stop());
@@ -218,18 +202,7 @@ function Room() {
                 <div className="userBorder">
                     <section className="user-video">
                         <video autoPlay ref={userVideo} />
-                        <div className="pids-wrapper">
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                            <div className="pid" />
-                        </div>
+
                     </section>
 
                 </div>

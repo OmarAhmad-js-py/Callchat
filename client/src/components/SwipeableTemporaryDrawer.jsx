@@ -19,7 +19,7 @@ export default function SwipeableTemporaryDrawer() {
     const [chat, setChat] = useState(false);
     const items = [
         { title: "Home", src: faHome },
-        { title: "Chat", src: faComments, onClick: () => SetYtOpen(!ytOpen) },
+        { title: "Chat", src: faComments, onClick: () => setChat(!chat) },
         { title: "Profile", src: faUser },
     ]
 
@@ -50,7 +50,7 @@ export default function SwipeableTemporaryDrawer() {
                     </h1>
                 </div>
                 {items.map((item, index) => (
-                    <ListItem key={index} onClick={() => setChat(!chat)} disablePadding className="flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-xl items-center gap-x-4 gap-y-4 mt-9 ">
+                    <ListItem key={index} onClick={item.onClick} disablePadding className="flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-xl items-center gap-x-4 gap-y-4 mt-9 ">
                         <ListItemButton>
                             <ListItemIcon>
                                 <FontAwesomeIcon icon={item.src} className="text-white" />
