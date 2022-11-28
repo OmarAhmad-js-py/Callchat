@@ -13,20 +13,8 @@ export function ConversationsProvider({ id, children }) {
     const [conversations, setConversations] = useLocalStorage('conversations', [])
     const [selectedConversationIndex, setSelectedConversationIndex] = useState(0)
 
-    function createConversation(recipients) {
-        socket.emit('room', id)
-        socket.on('payload', (room) => {
-            setConversations(prevConversations => {
-                let newMessage = {
-                    recipients: [room],
-                    messages: [{ text: 'Hello', FromMe: false }]
-                }
-                return [...prevConversations, newMessage]
-            })
-        })
-    }
 
-    createConversation()
+
 
 
 
@@ -46,6 +34,7 @@ export function ConversationsProvider({ id, children }) {
     const formattedConversations = conversations.map((conversation, index) => {
         const messages = conversation.messages.map(message => {
             const fromMe = socket.id === message.sender.sender
+
             return {
                 ...message,
                 FromMe: fromMe
@@ -53,6 +42,18 @@ export function ConversationsProvider({ id, children }) {
         })
         return { messages }
     })
+
+
+    socket.on("user left", userID => {
+        setConversations(prevConversations => {
+            return prevConversations.filter((conversation, i) => {
+                console.log(conversation.recipients)
+                return conversation.recipients == userID
+            })
+        })
+        console.log(conversations)
+    });
+
     useEffect(() => {
         if (socket == null) return
         socket.on('receive-message', addMessageToConversation)
@@ -61,6 +62,7 @@ export function ConversationsProvider({ id, children }) {
 
     function sendMessage(sender, text) {
         socket.emit('Send_message', { sender, text })
+
         addMessageToConversation({ text, sender })
     }
 

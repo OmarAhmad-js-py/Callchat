@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState, useEffect, useRef, useCallback } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShare } from "@fortawesome/free-solid-svg-icons";
+import { faShare, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import socket from '../routes/util/hooks/socketInstance';
 import { useConversations } from '../routes/util/Context/MessageProvider.jsx';
 
@@ -18,7 +18,7 @@ function SidebarComponent(props) {
     const { sendMessage, conversations } = useConversations()
 
     function handleSubmit() {
-
+        if (text == '') return;
         sendMessage(
             { sender: socket.id },
             text
@@ -69,6 +69,11 @@ function SidebarComponent(props) {
                     <input
                         type="text"
                         onChange={e => setText(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key === "Enter") {
+                                handleSubmit()
+                            }
+                        }}
                         value={text}
                         placeholder="Type a message"
                         aria-label="Enter a message here to chat in your room"
@@ -76,12 +81,12 @@ function SidebarComponent(props) {
                         autoComplete="off"
                     />
                     <button
-                        className="bg-primary-600 "
+                        className="bg-primary-600 text-center text-white rounded-full p-2"
                         onClick={() => handleSubmit()}
                         aria-label="Click here to send message"
                         tabIndex="0"
                     >
-                        <FontAwesomeIcon icon={faShare} size='lg' />
+                        <FontAwesomeIcon icon={faPaperPlane} size='lg' />
                     </button>
                 </div>
             </section >

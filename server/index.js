@@ -59,13 +59,27 @@ io.on("connection", socket => {
         io.to(payload.target).emit("answer", payload);
     });
 
+    socket.on("leave room", incoming => {
+        console.log(`leave room ${incoming}`);
+        console.log(rooms[incoming])
+        if (rooms[incoming].length < 1) {
+            delete rooms[incoming];
+            console.log(rooms);
+        } else {
+            rooms[incoming] = rooms[incoming].filter(id => id !== socket.id);
+            console.log(rooms[incoming])
+            const otherUser = rooms[incoming].find(id => id !== socket.id);
+            socket.to(otherUser).emit("user left", socket.id);
+        }
+    });
+
     socket.on("ice-candidate", incoming => {
         io.to(incoming.target).emit("ice-candidate", incoming.candidate);
     });
 
     socket.on("room", payload => {
         const room = Object.keys(rooms).find(key => rooms[key])
-        console.log(room);
+        console.log(room + "on room");
         socket.to(payload).emit("payload", room)
     });
 
@@ -77,7 +91,7 @@ io.on("connection", socket => {
                 const otherUser = rooms[roomID].find(id => id !== socket.id);
                 console.log(otherUser + " is the other user")
                 socket.to(otherUser).emit("receive-message", {
-                    recipients: socket.id, sender: payload.sender, text: payload.text
+                    recipients: otherUser, sender: payload.sender, text: payload.text
                 });
                 console.log(`${payload.message} sent to ${otherUser}`);
             } else {

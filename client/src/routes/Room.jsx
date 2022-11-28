@@ -20,6 +20,7 @@ import {
 
 
 function Room() {
+    const [partner, setPartner] = useState(false);
     const [audio, setAudio] = useState(true);
     const [video, setVideo] = useState(true);
     const [audioMax, setAudioMax] = useState(false);
@@ -35,6 +36,7 @@ function Room() {
 
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio, video }).then(stream => {
+
             userVideo.current.srcObject = stream;
             userStream.current = stream;
             const audioContext = new AudioContext();
@@ -66,6 +68,10 @@ function Room() {
                 otherUser.current = userID;
             });
 
+            socket.on("user left", userID => {
+                setPartner(false);
+            });
+
             socket.on("offer", handleReceiveCall);
 
             socket.on("answer", handleAnswer);
@@ -80,6 +86,7 @@ function Room() {
     function callUser(userID) {
         peerRef.current = createPeer(userID);
         userStream.current.getTracks().forEach(track => peerRef.current.addTrack(track, userStream.current));
+        setPartner(true);
     }
 
     function createPeer(userID) {
@@ -122,6 +129,7 @@ function Room() {
         const desc = new RTCSessionDescription(incoming.sdp);
         peerRef.current.setRemoteDescription(desc).then(() => {
             userStream.current.getTracks().forEach(track => peerRef.current.addTrack(track, userStream.current));
+            setPartner(true);
         }).then(() => {
             return peerRef.current.createAnswer();
         }).then(answer => {
@@ -160,13 +168,13 @@ function Room() {
 
     function handleTrackEvent(e) {
         partnerVideo.current.srcObject = e.streams[0];
+
     }
 
 
     const toggleAudio = () => {
         setAudio(audio => !audio);
         userStream.current.getAudioTracks()[0].enabled = !(userStream.current.getAudioTracks()[0].enabled);
-
     };
     const toggleVideo = () => {
         setVideo(video => !video);
@@ -183,8 +191,17 @@ function Room() {
     // };
 
     const hangUp = () => {
+        if (!peerRef.current) {
+            userStream.current.getTracks().forEach(track => track.stop());
+            socket.emit("leave room", params.roomID);
+            navigate("/");
+            setPartner(false);
+        }
         userStream.current.getTracks().forEach(track => track.stop());
         peerRef.current.close();
+        socket.emit("leave room", params.roomID);
+        navigate("/");
+        setPartner(false);
     };
 
 
@@ -194,18 +211,18 @@ function Room() {
     return (
         <>
             <div className="webcam-section">
-                <div className="userBorder">
+                <div className="userBorder userBorder-animationLeft" style={{ display: partner ? 'block' : 'none' }} >
                     <section className="partner-video">
-                        <video autoPlay ref={partnerVideo} />
+                        <video autoPlay playsInline ref={partnerVideo} />
                     </section>
                 </div>
                 <div className="userBorder">
                     <section className="user-video">
                         <video autoPlay ref={userVideo} />
-
                     </section>
-
                 </div>
+
+
             </div>
             <div className="webcam-controls">
                 <ScreamComponent open={audioMax} />

@@ -41,19 +41,38 @@
 
 .userBorder {
   width: fit-content;
-  height: fit-content;
   border: 1px solid #e5e7e5;
   border-radius: 20px;
   padding: 10px;
   margin: 10px;
 }
 
-.webcam-section {
+.userBorder-animationLeft {
+  animation: left 0.5s ease-in-out forwards; ; 
+}
+
+@keyframes left {
+  0% {
+    transform: translateX(500px);
+  }
+ 
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.webcam-section {  
   margin-top:100px; 
   display: flex;
   justify-content: center;
   align-items: center;
 
+}
+
+.webcam-section video {
+  width: 600px;
+  height: min-content;
+  border-radius: 20px;
 }
 
 .webcam-controls {
@@ -73,6 +92,10 @@
   top: 0;
   left: 0;
 }
+
+
+  
+
 
 .btn {
   background-color: #4caf50;
@@ -114,9 +137,11 @@
 }
 
 .pid {
-  width: calc(15%);
+  width: 10px;
   height: 10px;
   display: inline-block;
+  margin: 5px;
+  border-radius: 5px;
   background-color: #555;
 }
 
