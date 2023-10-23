@@ -4,6 +4,9 @@ import "../assets/MsgStyles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from "react-router-dom";
 import socket from './util/hooks/socketInstance';
+import YoutubeComponent from '../components/YoutubeComponent';
+// import { createPeer, handleAnswer, handleReceiveCall, handleNewICECandidateMsg } from './util/Peer';
+
 import { useLocalStorage } from './util/hooks/useLocalStorage';
 import {
     faBars,
@@ -25,6 +28,7 @@ function Room() {
     const [video, setVideo] = useState(true);
     const [audioMax, setAudioMax] = useState(false);
     const [socketInstanceID, setSocketInstanceID] = useLocalStorage("sockeID", [])
+    const [text, setText] = useState("");
     const navigate = useNavigate();
     const params = useParams();
     const userVideo = useRef();
@@ -221,9 +225,10 @@ function Room() {
                         <video autoPlay ref={userVideo} />
                     </section>
                 </div>
-
-
+                <YoutubeComponent />
             </div>
+
+
             <div className="webcam-controls">
                 <ScreamComponent open={audioMax} />
                 <div className="controllpanel">

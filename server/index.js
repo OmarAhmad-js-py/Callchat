@@ -11,13 +11,6 @@ const io = require("socket.io")(server, {
 });
 
 const rooms = {};
-
-
-
-
-
-
-
 app.use(cors())
 
 io.on("connection", socket => {
@@ -102,7 +95,21 @@ io.on("connection", socket => {
         }
     })
 
+    socket.on("videoID", payload => {
+        console.log(payload)
+        const roomID = Object.keys(rooms).find(key => rooms[key].includes(socket.id));
+        console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
+        const otherUser = rooms[roomID].find(id => id !== socket.id);
+        socket.to(otherUser).emit("youtID", payload)
+    })
+
+    socket.on("play", () => {
+        const roomID = Object.keys(rooms).find(key => rooms[key].includes(socket.id));
+        console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
+        const otherUser = rooms[roomID].find(id => id !== socket.id);
+        socket.to(otherUser).emit("play")
+    })
 });
 
-const port = 8000
+const port = 8000;
 server.listen(port, () => console.log(`Listening on port ${port}`));

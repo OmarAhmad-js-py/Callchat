@@ -14,10 +14,6 @@ export function ConversationsProvider({ id, children }) {
     const [selectedConversationIndex, setSelectedConversationIndex] = useState(0)
 
 
-
-
-
-
     const addMessageToConversation = useCallback(({ recipients, text, sender }) => {
         setConversations(prevConversations => {
             let madeChange = false

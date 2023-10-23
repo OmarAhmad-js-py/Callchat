@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from "react"
-import YoutubeComponent from '../components/YoutubeComponent.jsx';
+import ChatComponent from './ChatComponent.jsx';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
@@ -8,11 +8,14 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import socket from '../routes/util/hooks/socketInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComments, faHome, faUser, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faComments, faHome, faUser, faBars, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function SwipeableTemporaryDrawer() {
+    const [videoID, setVideoID] = useState(null)
+    const [text, setText] = useState("");
     const [state, setState] = useState({
         left: false,
     });
@@ -22,6 +25,22 @@ export default function SwipeableTemporaryDrawer() {
         { title: "Chat", src: faComments, onClick: () => setChat(!chat) },
         { title: "Profile", src: faUser },
     ]
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let video_id = text.split('v=')[1];
+        let ampersandPosition = video_id.indexOf('&');
+        if (ampersandPosition != -1) {
+            video_id = video_id.substring(0, ampersandPosition);
+        }
+        socket.emit('videoID', video_id)
+        setVideoID(video_id)
+    }
+
+
+
+
+
 
     const toggleDrawer = (anchor, open) => (event) => {
         if (
@@ -67,7 +86,7 @@ export default function SwipeableTemporaryDrawer() {
     );
 
     return (<>
-        <div className="sidebar-container" >
+        <div className="sidebar-container">
             {['left'].map((anchor) => (
                 <React.Fragment key={anchor} >
                     <Button onClick={toggleDrawer(anchor, true)}><FontAwesomeIcon icon={faBars} size="lg" /></Button>
@@ -81,9 +100,20 @@ export default function SwipeableTemporaryDrawer() {
                     </SwipeableDrawer>
                 </React.Fragment>
             ))}
+            {/* serach bar */}
+            <div className="flex items-center justify-center ml-4 my-1 grow">
+                <div className="flex items-center justify-center bg-light-white rounded-full w-96 h-12">
+                    <form onSubmit={handleSubmit}>
+                        <input type="text" onChange={e => setText(e.target.value)} value={text} className="indent-5 bg-transparent w-80 h-12 rounded-full outline-none" placeholder="Search" />
+                        <button type="submit" className="bg-primary-800 w-16 h-12 rounded-full text-white">
+                            <FontAwesomeIcon icon={faSearch} />
+                        </button>
+                    </form>
+                </div>
+            </div>
 
         </div>
-        <YoutubeComponent open={chat} />
+        <ChatComponent open={chat} />
     </>
     );
 }

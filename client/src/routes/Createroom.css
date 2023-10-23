@@ -64,6 +64,7 @@
 .webcam-section {  
   margin-top:100px; 
   display: flex;
+  flex-wrap: wrap-reverse;
   justify-content: center;
   align-items: center;
 
@@ -76,26 +77,34 @@
 }
 
 .webcam-controls {
-  /* bottom center  */
-  position: absolute;
+ position: fixed;
   bottom: 0;
+  z-index: 1;
   left: 50%;
   transform: translate(-50%, 0);
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
 
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 .sidebar-container{
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: wrap;
+  justify-content: center;
 }
-
-
-  
-
 
 .btn {
   background-color: #4caf50;
