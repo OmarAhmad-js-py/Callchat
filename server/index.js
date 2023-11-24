@@ -11,6 +11,7 @@ const io = require("socket.io")(server, {
 });
 
 const rooms = {};
+let masterSocket = null;
 app.use(cors())
 
 io.on("connection", socket => {
@@ -18,6 +19,8 @@ io.on("connection", socket => {
         console.log(`connect_error due to ${err.message}`);
     });
     socket.on("join room", roomID => {
+        if (!masterSocket) masterSocket = socket.id;
+
         console.log(rooms[roomID] < 1);
         console.log(`join room ${roomID}`);
         if (rooms[roomID]) {
@@ -54,7 +57,8 @@ io.on("connection", socket => {
 
     socket.on("leave room", incoming => {
         console.log(`leave room ${incoming}`);
-        console.log(rooms[incoming])
+
+        console.log(rooms)
         if (rooms[incoming].length < 1) {
             delete rooms[incoming];
             console.log(rooms);
@@ -98,9 +102,9 @@ io.on("connection", socket => {
     socket.on("videoID", payload => {
         console.log(payload)
         const roomID = Object.keys(rooms).find(key => rooms[key].includes(socket.id));
-        console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
-        const otherUser = rooms[roomID].find(id => id !== socket.id);
-        socket.to(otherUser).emit("youtID", payload)
+        const usersInThisRoom = rooms[roomID]
+        console.log(usersInThisRoom)
+        socket.to(usersInThisRoom).emit("youtID", payload)
     })
 
     socket.on("play", () => {
@@ -108,6 +112,23 @@ io.on("connection", socket => {
         console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
         const otherUser = rooms[roomID].find(id => id !== socket.id);
         socket.to(otherUser).emit("play")
+        console.log("played")
+    })
+
+    socket.on("pause", () => {
+        const roomID = Object.keys(rooms).find(key => rooms[key].includes(socket.id));
+        console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
+        const otherUser = rooms[roomID].find(id => id !== socket.id);
+        socket.to(otherUser).emit("pause")
+        console.log("paused")
+    })
+
+    socket.on("seeked", payload => {
+        const roomID = Object.keys(rooms).find(key => rooms[key].includes(socket.id));
+        console.log(roomID ? true : false, socket.id + " belongs to room " + Object.keys(rooms).find(key => rooms[key]));
+        const otherUser = rooms[roomID].find(id => id !== socket.id);
+        socket.to(otherUser).emit("seeked", payload)
+        console.log("seeked")
     })
 });
 
